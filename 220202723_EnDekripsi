@@ -1,0 +1,54 @@
+def caesar_encrypt(plaintext, shift):
+    encrypted_text = ""
+    for char in plaintext:
+        if char.isalpha():  # memeriksa status karakter(huruf/nonhuruf)
+            shift_base = ord('a') if char.islower() else ord('A')
+            encrypted_char = chr((ord(char) - shift_base + shift) % 26 + shift_base)
+            encrypted_text += encrypted_char
+        else:
+            encrypted_text += char  # tanpa ubah karakter non-huruf
+    return encrypted_text
+
+def caesar_decrypt(ciphertext, shift):
+    return caesar_encrypt(ciphertext, -shift)  
+
+def print_abjad(shift, encrypted_message):
+    abjad = "abcdefghijklmnopqrstuvwxyz"
+    shifted_abjad = abjad[shift:] + abjad[:shift]  
+
+    print("Abjad:       ", abjad)
+    print("Shifted:     ", shifted_abjad)
+    
+    # Menentukan garis bawah untuk huruf yang ada di encrypted_message
+    underline = ""
+    for char in shifted_abjad:
+        if char in encrypted_message.lower():  
+            underline += "_" 
+        else:
+            underline += " "  
+
+    print("             ", underline)  
+# Contoh penggunaan
+if __name__ == "__main__":
+    while True:
+        choice = input("Pilih opsi yang anda butuhkan:\n (E) enkripsi\n (D) dekripsi\n keluar (exit)? ").lower()
+        
+        if choice == 'exit':
+            break
+        elif choice not in ('e', 'd'):
+            print("Pilihan tidak valid, silakan coba lagi.")
+            continue
+
+        message = input("Masukkan pesan: ")  
+        shift = int(input("Masukkan nilai shift/pergeseran (contoh: 3): "))
+
+        if choice == 'e':
+            encrypted = caesar_encrypt(message, shift)
+            print("Encrypted:", encrypted)
+            print_abjad(shift, encrypted)  
+        elif choice == 'd':
+            decrypted = caesar_decrypt(message, shift)
+            print("Decrypted:", decrypted)
+            print_abjad(shift, message)  
+
+        print()  
